@@ -1,0 +1,17 @@
+{
+  "name": "ansiskengis/eleving-round-robin-tournament",
+  "description": "Round-Robin Tournament Simulation",
+  "type": "project",
+  "autoload": {
+    "psr-4": {
+      "Ansiskengis\\ElevingRoundRobinTournament\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "AnsisKengis",
+      "email": "ansiskengis@gmail.com"
+    }
+  ],
+  "require": {}
+}
