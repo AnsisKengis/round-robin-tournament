@@ -41,6 +41,14 @@ A modern web application that simulates round-robin tournament scheduling, gener
 
 2. Visit `http://localhost:8000` in your browser
 
+## Summary of approach
+
+The plan was to create a simple architecture by leveraging Doctrine ORM for basic entity management and changes, and by using an OOP approach to encapsulate each project component within its own class. Specifically, I developed three data layer entities - Tournament, Team, and Game and corresponding service layers - TournamentService, TeamService, and GameService to handle the business logic.
+
+The project also includes a small custom router in the index.php file that serves a Vue.js based HTML front end. While the front end fairly simple, but visually appealing and logically structured, the primary focus was definitely on the back-end components.
+
+Additionally, I implemented PHPUnit tests for each service and entity to ensure the overall stability of the application.
+
 ## Technology Stack
 
 - PHP 8.3
