@@ -1,0 +1,275 @@
+body {
+  font-family: Arial, sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+
+.container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: white;
+  font-size: 16px;
+  cursor: pointer;
+  appearance: none; /* Removes default browser styling */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 1em;
+  padding-right: 40px;
+}
+
+.form-group select:hover {
+  border-color: #4a5568;
+}
+
+.form-group select:focus {
+  outline: none;
+  border-color: #2d3748;
+  box-shadow: 0 0 0 3px rgba(45, 55, 72, 0.1);
+}
+
+/* Style for the options */
+.form-group select option {
+  padding: 10px;
+  font-size: 16px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="number"] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.message {
+  color: #4caf50;
+  margin: 10px 0;
+}
+
+.error {
+  color: #f44336;
+  margin: 10px 0;
+}
+
+.teams-section {
+  margin: 30px 0;
+}
+
+.teams-section h3 {
+  color: #333;
+  margin-bottom: 15px;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #eee;
+}
+
+.teams-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #f8f9fa;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.teams-table thead {
+  background: #4a5568;
+  color: white;
+}
+
+.teams-table th {
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.teams-table td {
+  padding: 12px 15px;
+  background: white;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.teams-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.teams-table tbody tr:hover td {
+  background: #f1f5f9;
+}
+
+/* Column specific styles */
+.teams-table td:nth-child(2),
+.teams-table td:nth-child(3),
+.teams-table td:nth-child(4),
+.teams-table th:nth-child(2),
+.teams-table th:nth-child(3),
+.teams-table th:nth-child(4) {
+  text-align: center;
+}
+
+/* Win rate column specific style */
+.teams-table td:last-child {
+  font-weight: 600;
+  color: #2d3748;
+}
+
+/* Update existing teams-table styles with medal colors */
+.teams-table tr.gold td {
+  background-color: rgba(255, 215, 0, 0.1);
+}
+
+.teams-table tr.gold:hover td {
+  background-color: rgba(255, 215, 0, 0.2) !important;
+}
+
+.teams-table tr.silver td {
+  background-color: rgba(192, 192, 192, 0.1);
+}
+
+.teams-table tr.silver:hover td {
+  background-color: rgba(192, 192, 192, 0.2) !important;
+}
+
+.teams-table tr.bronze td {
+  background-color: rgba(205, 127, 50, 0.1);
+}
+
+.teams-table tr.bronze:hover td {
+  background-color: rgba(205, 127, 50, 0.2) !important;
+}
+
+/* Optional: Add position indicators */
+.teams-table tr.gold td:first-child::before,
+.teams-table tr.silver td:first-child::before,
+.teams-table tr.bronze td:first-child::before {
+  margin-right: 8px;
+  font-weight: bold;
+}
+
+.teams-table tr.gold td:first-child::before {
+  content: "🥇";
+}
+
+.teams-table tr.silver td:first-child::before {
+  content: "🥈";
+}
+
+.teams-table tr.bronze td:first-child::before {
+  content: "🥉";
+}
+
+.games-section {
+  margin: 30px 0;
+}
+
+.round-section {
+  margin-bottom: 30px;
+}
+
+.round-section h3 {
+  color: #333;
+  margin-bottom: 15px;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #eee;
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.game-box {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.team-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  margin: 5px 0;
+  background: white;
+  border-radius: 4px;
+}
+
+.team-row.winner {
+  background: #e8f5e9;
+  font-weight: bold;
+}
+
+.score {
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.new-tournamet {
+  margin: 40px 0;
+  text-align: center;
+}
+
+.new-tournamet-button {
+  display: inline-block;
+  padding: 12px 24px;
+  background: linear-gradient(to right, #4a5568, #2d3748);
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: none;
+  font-size: 16px;
+}
+
+.new-tournamet-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(to right, #2d3748, #1a202c);
+}
+
+.new-tournamet-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
