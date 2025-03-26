@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Entities\Tournament;
 use App\Services\TournamentService;
 use App\Services\TeamService;
 use App\Services\GameService;
@@ -22,20 +23,11 @@ class TournamentController extends BaseController
         $this->gameService = new GameService($entityManager, $this->teamService);
     }
 
-    public function index(): string
+    public function create(array $data): string
     {
-        return $this->render('tournament/index');
-    }
-
-    public function create(): void
-    {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            $this->redirect('/');
-        }
-
         try {
-            $tournamentName = $_POST['tournament_name'] ?? '';
-            $teamCount = (int)($_POST['team_count'] ?? 0);
+            $tournamentName = $data['name'] ?? '';
+            $teamCount = (int)($data['teamCount'] ?? 0);
 
             if (empty($tournamentName)) {
                 throw new InvalidArgumentException('Tournament name is required');
@@ -45,46 +37,92 @@ class TournamentController extends BaseController
                 throw new InvalidArgumentException('Number of teams must be between 2 and 12');
             }
 
-            // Create tournament
+            // Generate tournament
             $tournament = $this->tournamentService->createTournament($tournamentName);
 
             // Generate teams
-            $teams = $this->teamService->generateTeams($tournament, $teamCount);
+            $this->teamService->generateTeams($tournament, $teamCount);
 
             // Refresh the tournament entity to load the new teams
             $this->entityManager->refresh($tournament);
 
-            // Generate games
-            $games = $this->gameService->generateGames($tournament);
+            // Generate games/matches
+            $this->gameService->generateGames($tournament);
 
             $tournament->setStatus('completed');
             $this->entityManager->flush();
 
-            $_SESSION['message'] = "Tournament '{$tournamentName}' created successfully with {$teamCount} teams!";
-            $this->redirect('/tournament/results?id=' . $tournament->getId());
+            return json_encode([
+                'status' => 'success',
+                'tournamentId' => $tournament->getId()
+            ]);
         } catch (\Exception $e) {
-            $_SESSION['error'] = $e->getMessage();
-            $this->redirect('/');
+            http_response_code(400);
+            return json_encode(['error' => $e->getMessage()]);
         }
     }
 
-    public function results(): string
+    public function results(?int $id = null): string
     {
-        $tournamentId = (int)($_GET['id'] ?? 0);
-        $tournament = $this->tournamentService->getTournament($tournamentId);
+        try {
+            if (!$id) {
+                throw new InvalidArgumentException('Tournament ID is required');
+            }
 
-        if (!$tournament) {
-            $_SESSION['error'] = 'Tournament not found';
-            $this->redirect('/');
+            $tournament = $this->tournamentService->getTournament($id);
+            if (!$tournament) {
+                throw new InvalidArgumentException('Tournament not found');
+            }
+
+            $teams = $tournament->getTeams()->toArray();
+            $games = $tournament->getGames()->toArray();
+
+            $data = [
+                'tournament' => [
+                    'id' => $tournament->getId(),
+                    'name' => $tournament->getName(),
+                    'status' => $tournament->getStatus()
+                ],
+                'teams' => array_map(function($team) {
+                    return [
+                        'id' => $team->getId(),
+                        'name' => $team->getName(),
+                        'wins' => $team->getWins(),
+                        'losses' => $team->getLosses(),
+                        'winRate' => $this->calculateWinRate($team)
+                    ];
+                }, $teams),
+                'games' => array_map(function($game) {
+                    return [
+                        'id' => $game->getId(),
+                        'round' => $game->getRound(),
+                        'team1' => [
+                            'name' => $game->getTeam1()->getName(),
+                            'score' => $game->getTeam1Score()
+                        ],
+                        'team2' => [
+                            'name' => $game->getTeam2()->getName(),
+                            'score' => $game->getTeam2Score()
+                        ],
+                        'winner' => $game->getWinner() ? $game->getWinner()->getName() : null,
+                        'status' => $game->getStatus()
+                    ];
+                }, $games)
+            ];
+
+            return json_encode($data);
+        } catch (\Exception $e) {
+            http_response_code(400);
+            return json_encode(['error' => $e->getMessage()]);
         }
+    }
 
-        $teams = $tournament->getTeams();
-        $games = $tournament->getGames();
-
-        return $this->render('tournament/results', [
-            'tournament' => $tournament,
-            'teams' => $teams,
-            'games' => $games
-        ]);
+    private function calculateWinRate($team): float
+    {
+        $totalGames = $team->getWins() + $team->getLosses();
+        if ($totalGames === 0) {
+            return 0.0;
+        }
+        return round(($team->getWins() / $totalGames) * 100, 1);
     }
 }

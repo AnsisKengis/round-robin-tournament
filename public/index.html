@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tournament System</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="/public/assets/css/main.css" />
+  </head>
+  <body>
+    <div id="app">
+      <div v-if="!currentTournament" class="container">
+        <h1>Tournament Generator</h1>
+        <div v-if="message" class="message">{{ message }}</div>
+        <div v-if="error" class="error">{{ error }}</div>
+
+        <form @submit.prevent="createTournament">
+          <div class="form-group">
+            <label for="tournament_name">Tournament Name:</label>
+            <input type="text" v-model="formData.name" required />
+          </div>
+
+          <div class="form-group">
+            <label for="team_count">Number of Teams:</label>
+            <select v-model="formData.teamCount" required>
+              <option v-for="n in 11" :key="n" :value="n+1">{{ n+1 }}</option>
+            </select>
+          </div>
+
+          <button type="submit">Generate Tournament</button>
+        </form>
+      </div>
+
+      <!-- Tournament Results -->
+      <div v-else class="container">
+        <h1>Tournament Results</h1>
+
+        <div class="tournament-info">
+          <h2>{{ currentTournament.tournament.name }}</h2>
+          <p>Status: {{ currentTournament.tournament.status }}</p>
+        </div>
+
+        <!-- Games Section -->
+        <div class="games-section">
+          <template v-for="(games, round) in gamesByRound" :key="round">
+            <div class="round-section">
+              <h2>Round {{ round }}</h2>
+              <div class="games-grid">
+                <div v-for="game in games" :key="game.id" class="game-box">
+                  <div
+                    :class="['team-row', { winner: game.winner === game.team1.name }]"
+                  >
+                    {{ game.team1.name }}
+                    <span class="score">{{ game.team1.score }}</span>
+                  </div>
+                  <div
+                    :class="['team-row', { winner: game.winner === game.team2.name }]"
+                  >
+                    {{ game.team2.name }}
+                    <span class="score">{{ game.team2.score }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <!-- Team Standings -->
+        <div class="teams-section">
+          <h2>Team Standings</h2>
+          <table class="teams-table">
+            <thead>
+              <tr>
+                <th>Team Name</th>
+                <th>Wins</th>
+                <th>Losses</th>
+                <th>Win Rate</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="team in sortedTeams"
+                :key="team.id"
+                :class="getPositionClass(team)"
+              >
+                <td>{{ team.name }}</td>
+                <td>{{ team.wins }}</td>
+                <td>{{ team.losses }}</td>
+                <td>{{ team.winRate }}%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="new-tournament">
+          <button @click="resetTournament">Create New Tournament</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="/public/assets/js/app.js"></script>
+  </body>
+</html>
