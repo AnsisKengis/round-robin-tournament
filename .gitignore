@@ -1,4 +1,5 @@
 vendor/
+.env
 
 # PHPUnit cache files
 .phpunit.cache
