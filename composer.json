@@ -28,7 +28,8 @@
     "migrations:diff": "vendor/bin/doctrine-migrations diff --allow-empty-diff",
     "migrations:migrate": "vendor/bin/doctrine-migrations migrate --no-interaction",
     "migrations:generate": "vendor/bin/doctrine-migrations generate",
-    "migrations:status": "vendor/bin/doctrine-migrations status"
+    "migrations:status": "vendor/bin/doctrine-migrations status",
+    "phpunit:run": "vendor/bin/phpunit"
   },
   "config": {
     "sort-packages": true

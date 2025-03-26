@@ -1,1 +1,4 @@
 vendor/
+
+# PHPUnit cache files
+.phpunit.cache
