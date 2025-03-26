@@ -1,14 +1,15 @@
 # Round-Robin Tournament Simulation
 
-A PHP application that simulates round-robin tournament scheduling, generates games and results.
+A modern web application that simulates round-robin tournament scheduling, generates games and results.
 
 ## Features
 
 - Create tournaments with 2-12 teams
 - Automatic team name generation
 - Round-robin tournament game scheduling based on team count
-- Automatic game simulation with random basketball like scores
+- Automatic game simulation with random basketball-like scores
 - Team standings with win/loss tracking
+- Real-time updates and dynamic UI
 
 ## Requirements
 
@@ -24,7 +25,7 @@ A PHP application that simulates round-robin tournament scheduling, generates ga
    composer install
 
 3. Configure your environment:
-   Create new .env file and copy .env.example
+   Create new `.env` file and copy `.env.example` content
    Edit with your database credentials
 
 4. Create the database:
@@ -35,7 +36,7 @@ A PHP application that simulates round-robin tournament scheduling, generates ga
 
 ## Running the Application
 
-1. Start the PHP development server:
+1. Start the PHP development server (make sure port is free for use):
    php -S localhost:8000
 
 2. Visit `http://localhost:8000` in your browser
@@ -43,23 +44,20 @@ A PHP application that simulates round-robin tournament scheduling, generates ga
 ## Technology Stack
 
 - PHP 8.3
-- Doctrine ORM
+- Doctrine ORM for database operations
 - PHPUnit Testing framework
-- FakerPHP: Generation of realistic test data
-- Plain PHP Templates with HTML for front end
-- CSS Basic styling
+- FakerPHP for test data generation
+- Vue.js
+- Axios for API communication
+
+## API Endpoints
+
+- `POST /tournament/create` - Create a new tournament
+- `GET /tournament/{id}` - Get tournament results
 
 ### Running Tests
 
 composer phpunit:run
-
-## Database Schema
-
-The application uses three main entities:
-
-- Tournament: Manages tournament lifecycle
-- Team: Tracks team statistics and tournament participation
-- Game: Records game results, rounds played and winners
 
 ## Available Commands
 
