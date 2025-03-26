@@ -4,7 +4,6 @@ namespace App\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
-use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'games')]
@@ -159,7 +158,7 @@ class Game
                     }
                 }
             }
-            
+
             $this->winner = $winner;
             return $this;
         } catch (\Error $e) {

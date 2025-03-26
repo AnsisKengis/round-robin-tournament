@@ -104,4 +104,4 @@ class TournamentServiceTest extends TestCase
 
         $this->tournamentService->createTournament('Test Tournament');
     }
-} 
+}

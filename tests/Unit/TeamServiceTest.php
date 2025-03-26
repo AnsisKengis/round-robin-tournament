@@ -6,7 +6,6 @@ use App\Entities\Team;
 use App\Entities\Tournament;
 use App\Services\TeamService;
 use Doctrine\ORM\EntityManager;
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use RuntimeException;

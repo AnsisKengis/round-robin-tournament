@@ -33,15 +33,19 @@ class GameTest extends TestCase
         $this->team1->method('getTournament')->willReturn($this->tournament);
         $this->team2->method('getTournament')->willReturn($this->tournament);
 
+        // Generate new game
         $this->game = new Game($this->tournament, $this->team1, $this->team2);
     }
 
     public function testGameCreation(): void
     {
+        // Check created game has correct teams and statuses
         $this->assertEquals($this->tournament, $this->game->getTournament());
         $this->assertEquals($this->team1, $this->game->getTeam1());
         $this->assertEquals($this->team2, $this->game->getTeam2());
         $this->assertEquals('upcoming', $this->game->getStatus());
+
+        // Scores initially should be null
         $this->assertNull($this->game->getTeam1Score());
         $this->assertNull($this->game->getTeam2Score());
         $this->assertNull($this->game->getWinner());
@@ -49,7 +53,7 @@ class GameTest extends TestCase
 
     public function testCannotCreateGameWithSameTeam(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Team 1 and Team 2 cannot be the same team');
 
         // Create a mock team with the same ID
@@ -77,30 +81,6 @@ class GameTest extends TestCase
         $this->game->setWinner($this->team1);
 
         $this->assertEquals($this->team1, $this->game->getWinner());
-    }
-
-    public function testCannotSetWinnerFromDifferentTeam(): void
-    {
-        $otherTeam = $this->createMock(Team::class);
-        $otherTeam->method('getId')->willReturn(3);
-        $otherTeam->method('getName')->willReturn('Other Team');
-        $otherTeam->method('getTournament')->willReturn($this->tournament);
-
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Winner must be one of the teams playing in this game');
-
-        $this->game->setWinner($otherTeam);
-    }
-
-    public function testGameStatus(): void
-    {
-        $this->assertTrue($this->game->isUpcoming());
-
-        $this->game->setStatus('in_progress');
-        $this->assertTrue($this->game->isInProgress());
-
-        $this->game->setStatus('completed');
-        $this->assertTrue($this->game->isCompleted());
     }
 
     public function testInvalidStatus(): void

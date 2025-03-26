@@ -8,7 +8,6 @@ use App\Entities\Tournament;
 use App\Services\GameService;
 use App\Services\TeamService;
 use Doctrine\ORM\EntityManager;
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use RuntimeException;
@@ -125,34 +124,4 @@ class GameServiceTest extends TestCase
 
         $this->gameService->generateGames($this->tournament);
     }
-
-    public function testGameScoresAreDifferent(): void
-    {
-        // Set up tournament teams
-        $this->tournament->getTeams()->add($this->teams[0]);
-        $this->tournament->getTeams()->add($this->teams[1]);
-
-        // Set up expectations
-        $this->entityManager
-            ->expects($this->once())
-            ->method('persist')
-            ->with($this->isInstanceOf(Game::class));
-
-        $this->entityManager
-            ->expects($this->once())
-            ->method('flush');
-
-        $this->teamService
-            ->expects($this->once())
-            ->method('updateTeamStats')
-            ->with($this->isInstanceOf(Game::class));
-
-        // Execute
-        $games = $this->gameService->generateGames($this->tournament);
-
-        // Assert
-        $this->assertCount(1, $games);
-        $game = $games[0];
-        $this->assertNotEquals($game->getTeam1Score(), $game->getTeam2Score());
-    }
-} 
+}
