@@ -99,6 +99,10 @@
       </div>
     </div>
 
+    <script>
+      // Pass tournament ID to Vue.js
+      window.INITIAL_TOURNAMENT_ID = <?php echo $tournamentId ?? 'null'; ?>;
+    </script>
     <script src="/public/assets/js/app.js"></script>
   </body>
 </html>

@@ -26,27 +26,19 @@ class TournamentController extends BaseController
     public function create(array $data): string
     {
         try {
-            $tournamentName = $data['name'] ?? '';
+            $name = $data['name'] ?? '';
             $teamCount = (int)($data['teamCount'] ?? 0);
 
-            if (empty($tournamentName)) {
-                throw new InvalidArgumentException('Tournament name is required');
+            if (empty($name) || $teamCount < 2 || $teamCount > 12) {
+                throw new InvalidArgumentException('Invalid tournament data');
             }
 
-            if ($teamCount < 2 || $teamCount > 12) {
-                throw new InvalidArgumentException('Number of teams must be between 2 and 12');
-            }
-
-            // Generate tournament
-            $tournament = $this->tournamentService->createTournament($tournamentName);
-
-            // Generate teams
-            $this->teamService->generateTeams($tournament, $teamCount);
+            $tournament = $this->tournamentService->createTournament($name);
+            $teams = $this->teamService->generateTeams($tournament, $teamCount);
 
             // Refresh the tournament entity to load the new teams
             $this->entityManager->refresh($tournament);
 
-            // Generate games/matches
             $this->gameService->generateGames($tournament);
 
             $tournament->setStatus('completed');
@@ -54,7 +46,8 @@ class TournamentController extends BaseController
 
             return json_encode([
                 'status' => 'success',
-                'tournamentId' => $tournament->getId()
+                'tournamentId' => $tournament->getId(),
+                'redirectUrl' => "/tournament/{$tournament->getId()}"
             ]);
         } catch (\Exception $e) {
             http_response_code(400);

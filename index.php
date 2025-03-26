@@ -8,16 +8,29 @@ use App\Config\DatabaseConfig;
 // Get EntityManager from configuration
 $entityManager = DatabaseConfig::getEntityManager();
 
-// Simple router
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'];
 
-// Initialize controller with EntityManager
 $tournamentController = new TournamentController($entityManager);
 
 try {
+    // Match tournament results with ID in URL
+    if (preg_match('#^/tournament/(\d+)$#', $path, $matches)) {
+        $id = (int)$matches[1];
+        // If we create tournament and it's an AJAX request, return JSON
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+            echo $tournamentController->results($id);
+        } else {
+            // For direct URL access, serve the HTML page with tournament ID
+            $tournamentId = $id;
+            include __DIR__ . '/public/index.html';
+        }
+        exit;
+    }
+
     switch ($path) {
         case '/':
+            $tournamentId = null;
             include __DIR__ . '/public/index.html';
             break;
 
@@ -25,21 +38,6 @@ try {
             if ($method === 'POST') {
                 $data = json_decode(file_get_contents('php://input'), true);
                 echo $tournamentController->create($data);
-            }
-            break;
-
-        case '/tournament/results':
-            if ($method === 'GET') {
-                // Retrieve and validate the id from the query string
-                $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-
-                // Check if the id is valid (filter_input returns false or null if invalid)
-                if ($id === false || $id === null) {
-                    echo "Invalid tournament id.";
-                    exit;
-                }
-
-                echo $tournamentController->results($id);
             }
             break;
 
