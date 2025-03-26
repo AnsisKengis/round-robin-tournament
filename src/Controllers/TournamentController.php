@@ -55,7 +55,7 @@ class TournamentController extends BaseController
             $this->entityManager->refresh($tournament);
 
             // Generate games
-            $games = $this->gameService->generateGames($tournament, $teams);
+            $games = $this->gameService->generateGames($tournament);
 
             $tournament->setStatus('completed');
             $this->entityManager->flush();

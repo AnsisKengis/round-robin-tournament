@@ -60,7 +60,7 @@ class TeamService
 
         do {
             try {
-                $name = ucfirst($this->faker->word) . ' ' . $this->faker->randomElement($suffixes);
+                $name = ucfirst($this->faker->colorName) . ' ' . $this->faker->randomElement($suffixes);
 
                 // Check if name is already used in this batch
                 if (in_array($name, $usedNames)) {
@@ -88,5 +88,10 @@ class TeamService
         $team2->$team2Method();
 
         $this->entityManager->flush();
+    }
+
+    public function getTeam(int $id): ?Team
+    {
+        return $this->entityManager->getRepository(Team::class)->find($id);
     }
 }

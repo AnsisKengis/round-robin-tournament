@@ -5,6 +5,7 @@ namespace App\Entities;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'tournaments')]
@@ -18,7 +19,7 @@ class Tournament
     #[ORM\Column(length: 255)]
     private string $name;
 
-    #[ORM\Column(length: 20)]
+    #[ORM\Column(length: 20, options: ["check" => "status IN ('upcoming', 'in_progress', 'completed')"])]
     private string $status = 'upcoming';
 
     #[ORM\OneToMany(mappedBy: 'tournament', targetEntity: Team::class, cascade: ['persist'])]
@@ -57,6 +58,10 @@ class Tournament
 
     public function setStatus(string $status): self
     {
+        $validStatuses = ['upcoming', 'in_progress', 'completed'];
+        if (!in_array($status, $validStatuses)) {
+            throw new InvalidArgumentException('Invalid tournament status. Must be one of: ' . implode(', ', $validStatuses));
+        }
         $this->status = $status;
         return $this;
     }

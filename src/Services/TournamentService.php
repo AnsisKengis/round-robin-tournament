@@ -18,7 +18,6 @@ class TournamentService
     {
         try {
             $tournament = new Tournament($name);
-            $tournament->setStatus('upcoming');
 
             $this->entityManager->persist($tournament);
             $this->entityManager->flush();

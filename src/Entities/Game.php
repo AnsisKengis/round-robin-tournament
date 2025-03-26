@@ -4,6 +4,7 @@ namespace App\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'games')]
@@ -29,7 +30,7 @@ class Game
     #[ORM\Column]
     private int $round;
 
-    #[ORM\Column(length: 20)]
+    #[ORM\Column(length: 20, options: ["check" => "status IN ('upcoming', 'in_progress', 'completed')"])]
     private string $status = 'upcoming';
 
     #[ORM\Column(nullable: true)]

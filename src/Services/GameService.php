@@ -23,7 +23,7 @@ class GameService
         $this->teamService = $teamService;
     }
 
-    public function generateGames(Tournament $tournament, Array $teams): array
+    public function generateGames(Tournament $tournament): array
     {
         try {
             $games = [];
@@ -40,6 +40,9 @@ class GameService
             }
 
             $numberOfRounds = $teamCount - 1;
+
+            // Once starting generating games and scores we change tournament status to in_progress;
+            $tournament->setStatus('in_progress');
 
             for ($round = 0; $round < $numberOfRounds; $round++) {
                 for ($i = 0; $i < floor($teamCount / 2); $i++) {

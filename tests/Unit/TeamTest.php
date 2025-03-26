@@ -39,7 +39,7 @@ class TeamTest extends TestCase
     public function testIncrementWins(): void
     {
         $this->team->incrementWins();
-        $this->assertEquals(2, $this->team->getWins());
+        $this->assertEquals(1, $this->team->getWins());
 
         $this->team->incrementWins();
         $this->assertEquals(2, $this->team->getWins());

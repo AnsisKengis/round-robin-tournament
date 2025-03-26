@@ -84,4 +84,4 @@ class Team
         $this->tournament = $tournament;
         return $this;
     }
-} 
+}
