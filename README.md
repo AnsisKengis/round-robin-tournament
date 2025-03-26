@@ -1,6 +1,6 @@
 # Round-Robin Tournament Simulation
 
-A modern web application that simulates round-robin tournament scheduling, generates games and results.
+A modern web application that simulates round-robin tournament scheduling, automatically generating games and results.
 
 ## Features
 
@@ -69,6 +69,6 @@ composer phpunit:run
 
 ## Available Commands
 
-composer migrations:diff # Used to generate migration versions based of entity changes
-composer migrations:migrate # Run pending/ready migrations
-composer migrations:status # Check migration status
+- composer migrations:diff # Used to generate migration versions based of entity changes
+- composer migrations:migrate # Run pending/ready migrations
+- composer migrations:status # Check migration status
